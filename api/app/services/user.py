@@ -8,7 +8,6 @@ def get_account_by_id(account_id: str, db: Session) -> models.User:
     record = db.query(models.User).filter(models.User.id == account_id).first()
     if not record:
         raise HTTPException(status_code=404, detail="Not Found") 
-    record.id = str(record.id)
     return record
 
 def create_account(user: schemas.UserCreation, db: Session) -> models.User:
@@ -28,10 +27,6 @@ def delete_user_by_id(account_id: str, db: Session) -> models.User:
     db.commit()
     return db_user
 
-
-def delete_all_users(db: Session) -> List[models.User]:
-    records = db.query(models.User).filter()
-    for record in records:
-        db.delete(record)
-    db.commit()
-    return records
+def update_account_by_id(account_id, properties,new_value, db: Session):
+    record = get_account_by_id(account_id)
+    record.
