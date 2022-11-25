@@ -15,13 +15,21 @@ Pour synthétiser nous allons ici sélectionner les mots les plus fréquents (fr
 
 Nous allons configurer pour chaque joueur:
 
-- Un nom d'utilisateur unique qui permet de référencer le joueur.
+- Un identifiant de compte (unique) inconnu du joueur
 
-- Un surnom qui n'est pas forcément unique (ex: le prénom du joueur).
+- Nom
 
-- Un mot de passe (haché) qui lui permettra d'accéder à son compte avec son nom d'utilisateur.
+- Prénom
 
-- Un meilleur score
+- Un surnom / nom d'utilisateur unique qui permet de référencer le joueur et de le référencer 
+
+- Date de création de compte.
+
+- Adresse mail, pour une éventuelle confirmation de création de compte et éventuelle récupération de mt de passe oublié
+
+- Un mot de passe (haché) qui lui permettra d'accéder à son compte avec son nom d'utilisateur
+
+- Un meilleur score actualisé à chaque partie
 
 
 
