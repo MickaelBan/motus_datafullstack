@@ -3,14 +3,17 @@ from datetime import datetime
 from pydantic import BaseModel, Field, validator
 from uuid import uuid4
 from typing_extensions import Annotated
+import re
 
 class UserCreation(BaseModel):
     id: Annotated[str, Field(default_factory=lambda: uuid4().hex)]
     first_name: str
     second_name: Optional[str]
-    birth_date: Optional[datetime]
+    nickname: unic[str]
     password: str
     created_at: Annotated[datetime, Field(default_factory=lambda: datetime.now())]
+    email: str
+    best_score: Optional[int]
 
     @validator('first_name')
     def max_lenght_fn(cls, fn:str):
@@ -25,10 +28,20 @@ class UserCreation(BaseModel):
         return sn
 
     @validator('password')
-    def min_lenght_pw(cls, passw:str):
-        if len(passw) < 4 : 
-            raise ValueError("Password size must be greater than 4")
-        return passw
-
+    def check_password(passw:str):
+        if not re.search(r"[\d]+",passw):
+            raise ValueError("Password must contain at least one digit.")
+        if not re.search(r"[A-Z]+", passw):
+            raise ValueError("Password must contain at least one capital letter.")
+        if not re.search(r"[a-z]+", passw):
+            raise ValueError("Password must contain at least one lowercase letter.")
+        if not re.search(r"[\/.*@&$€()\[\]]",passw):
+            raise ValueError("Password must contain at least one special character: /.*@&$€()\[\]")
+        if len(passw) < 6 : 
+            raise ValueError("Password size must be greater than 6")
+        if re.search(r"[!;,:\\,ù¨^#]",passw):
+            raise ValueError("Password contain an illegal character: !;,:\\,ù¨^#")
+    
+    
     class Config:
         orm_mode = True
