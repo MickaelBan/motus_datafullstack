@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from models import BaseSQL,engine
-from routers import GetRouter,UserRouter
+from routers import UserRouter
 from typing import Optional
 
 
@@ -10,7 +10,6 @@ app = FastAPI(
     version="0.0.1",
 )
 
-app.include_router(GetRouter)
 app.include_router(UserRouter)
 
 

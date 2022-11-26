@@ -12,7 +12,8 @@ async def root():
 
 @router.get("/{account_id}")
 async def get_account(account_id: str, db: Session = Depends(models.get_db)):
-    return user_service.get_account_by_id(account_id = account_id, db = db)
+    return {"user account" : user_service.get_account_by_id(account_id = account_id, db = db)}
+
 
 @router.post("/create_account")
 async def create_account(user: schemas.UserCreation, db: Session = Depends(models.get_db)):
@@ -20,10 +21,13 @@ async def create_account(user: schemas.UserCreation, db: Session = Depends(model
 
 @router.delete("/{account_id}")
 async def delete_account_by_id(account_id, db: Session = Depends(models.get_db)):
-    return user_service.delete_user_by_id(account_id = account_id, db = db)
+    return {"user delete" : user_service.delete_user_by_id(account_id = account_id, db = db)}
 
 
 @router.put("/{account_id}/{properties}/{new_alue}")
 async def update_account_by_id(account_id, properties,new_value, db: Session = Depends(models.get_db)):
-    return user_service.update_by_id(account_id = account_id, field = properties,value = new_value, db = db)
+    return {"update" : user_service.update_by_id(account_id = account_id, field = properties,value = new_value, db = db)}
 
+@router.get("/connection/{usernickname}/{password}")
+async def user_connection(usernickname,password, db: Session = Depends(models.get_db)):
+    return {"connection" :user_service.connection(usernickname,password)}
