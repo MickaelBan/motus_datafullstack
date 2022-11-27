@@ -12,14 +12,15 @@ class User(BaseSQL):
         CheckConstraint('length(first_name)>0'),
         CheckConstraint('length(second_name)>0')
     )
-    id = Column(UUID(as_uuid=True), primary_key=True, index=True, nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, index=True, nullable=False,unique=True)
     nickname = Column(String(),ForeignKey("user.nickname"), nullable=False,unique=True )
     first_name = Column(String())
     second_name = Column(String())
     created_at = Column(DateTime(),nullable = False)
     password = Column(String(),nullable = False) 
     email = Column(String(),ForeignKey("user.email"), nullable=False,unique=True)
-    best_score = Column(Integer)
+    best_score = Column(Integer())
+    status = Column(Integer())
 
     
     

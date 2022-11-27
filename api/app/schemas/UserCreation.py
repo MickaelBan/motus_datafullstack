@@ -14,6 +14,7 @@ class UserCreation(BaseModel):
     password: str
     email: str
     best_score: Optional[int]
+    status: Annotated[int, Field(default_factory=lambda: 0)]
 
     @validator('first_name')
     def check_fn(cls, fn:str):

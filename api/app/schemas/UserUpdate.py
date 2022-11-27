@@ -11,6 +11,7 @@ class UserUpdate(BaseModel):
     password: Optional[str]   
     email: Optional[str]   
     best_score: Optional[int]
+    status: Optional[int]
 
     @validator('first_name')
     def check_fn(cls, fn:str):
