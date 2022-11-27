@@ -19,7 +19,8 @@ class User(BaseSQL):
     created_at = Column(DateTime(),nullable = False)
     password = Column(String(),nullable = False) 
     email = Column(String(),ForeignKey("user.email"), nullable=False,unique=True)
-    best_score = Column(Integer)
+    best_score = Column(Integer())
+    status = Column(Integer())
 
     
     

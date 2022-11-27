@@ -63,8 +63,24 @@ def update(userID:str,request: UserUpdate, db: Session) -> models.user:
 #log in a user
 def login_user(identifant: UserLogin, db: Session) -> models.user:
     user = get_account_by_nickname(nickname=identifant.nickname, db=db)
+    print(user)
     if not user:
         raise HTTPException(status_code=409, detail="user ivalid")
     if  user.password != identifant.password:
         raise HTTPException(status_code=409, detail="password invalid")
+    user.status = 1  
+    db.commit()
+    db.refresh(user)
+    return user
+
+def logout_user(nickname, db: Session) -> models.user:
+    user = get_account_by_nickname(nickname=nickname, db=db)
+    print(user)
+    if not user:
+        raise HTTPException(status_code=409, detail="user ivalid")
+    if user.status != 1:
+        raise HTTPException(status_code=409, detail="user not connected")
+    user.status = 0  
+    db.commit()
+    db.refresh(user)
     return user

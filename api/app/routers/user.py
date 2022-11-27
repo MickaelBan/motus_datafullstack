@@ -36,6 +36,10 @@ async def login_user(identifant: UserLogin, db: Session = Depends(models.get_db)
     user = user_service.login_user(identifant = identifant, db=db)
     return Reponse(code=200, status="ok", message="user login successfully", result=user).dict(exclude_none=True)
 
+@router.post("/logout/{nickename}")
+async def login_user(nickename: str, db: Session = Depends(models.get_db)):
+    user = user_service.logout_user(nickname = nickename, db=db)
+    return Reponse(code=200, status="ok", message="user login successfully", result=user).dict(exclude_none=True)
 
 @router.post("/create")
 async def create_account(request: UserCreation, db: Session = Depends(models.get_db)):
