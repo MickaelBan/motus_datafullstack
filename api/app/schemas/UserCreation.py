@@ -7,26 +7,36 @@ import re
 
 class UserCreation(BaseModel):
     id: Annotated[str, Field(default_factory=lambda: uuid4().hex)]
-    first_name: str
-    second_name: Optional[str]
     nickname: str
-    password: str
+    first_name: str
+    second_name: Optional[str]    
     created_at: Annotated[datetime, Field(default_factory=lambda: datetime.now())]
+    password: str
     email: str
     best_score: Optional[int]
 
     @validator('first_name')
-    def max_lenght_fn(cls, fn:str):
+    def check_fn(cls, fn:str):
+        if len(fn) < 1 :
+            raise ValueError("First name can't be null")
         if len(fn) > 40 : 
             raise ValueError("First name size must be less than 40")
         return fn
     
     @validator('second_name')
-    def max_lenght_sn(cls, sn:str):
+    def chek_sn(cls, sn:str):
         if len(sn) > 40 : 
             raise ValueError("Second name size must be less than 40")
         return sn
 
+    @validator('nickname')
+    def check_nn(cls, nn:str):
+        if len(nn)<1:
+            raise ValueError("First name can't be null")
+        if len(nn) > 40 : 
+            raise ValueError("First name size must be less than 40")
+        return nn
+     
     @validator('password')
     def check_password(passw:str):
         if not re.search(r"[\d]+",passw):
@@ -41,7 +51,7 @@ class UserCreation(BaseModel):
             raise ValueError("Password size must be greater than 6")
         if re.search(r"[!;,:\\,ù¨^#]",passw):
             raise ValueError("Password contain an illegal character: !;,:\\,ù¨^#")
-    
+        return passw
     
     class Config:
         orm_mode = True
