@@ -12,7 +12,7 @@ class User(BaseSQL):
         CheckConstraint('length(first_name)>0'),
         CheckConstraint('length(second_name)>0')
     )
-    id = Column(UUID(as_uuid=True), primary_key=True, index=True, nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, index=True, nullable=False,unique=True)
     nickname = Column(String(),ForeignKey("user.nickname"), nullable=False,unique=True )
     first_name = Column(String())
     second_name = Column(String())
