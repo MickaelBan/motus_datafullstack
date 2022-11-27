@@ -59,3 +59,130 @@ while word_input != word_check:
             word = word[:i] + "." + word[i+1:]
             
     print("your word: ",word_check, "the word you had to guess: ",word)
+
+
+while word_input != word_check:
+    
+    word_input = input("enter a word: ")
+    copy_word_input = word_input
+    word = "xxxxxxx"
+    copy_word_check = word_check
+    
+    for i in range (7):
+        if copy_word_input[i] == copy_word_check[i]:
+        
+            word = word[:i] + copy_word_check[i].upper() + word[i+1:]
+        
+            copy_word_input = copy_word_input[:i]+"@"+copy_word_input[i+1]
+        
+            copy_word_check = copy_word_check[:i]+"!"+copy_word_check[i+1:]
+        
+    for i in range (7):
+        if copy_word_check[i] == copy_word_input[i]:
+        
+            word = word[:i] + copy_word_check[i] + word[i+1:]
+        
+            ii = copy_word_input.find(copy_word_check[i])
+        
+            copy_word_input = copy_word_input[:ii]+"@"+copy_word_input[ii+1]
+        
+        elif word[i] == "x":
+        
+            word = word[:i] + "." + word[i+1:]
+            
+    print("your word: ",word_check, "the word you had to guess: ",word)
+
+
+while word_input != word_check:
+    
+    word_input = input("enter a word: ")
+    copy_word_input = word_input
+    word = "xxxxxxxx"
+    copy_word_check = word_check
+    
+    for i in range (8):
+        if copy_word_input[i] == copy_word_check[i]:
+        
+            word = word[:i] + copy_word_check[i].upper() + word[i+1:]
+        
+            copy_word_input = copy_word_input[:i]+"@"+copy_word_input[i+1]
+        
+            copy_word_check = copy_word_check[:i]+"!"+copy_word_check[i+1:]
+        
+    for i in range (8):
+        if copy_word_check[i] == copy_word_input[i]:
+        
+            word = word[:i] + copy_word_check[i] + word[i+1:]
+        
+            ii = copy_word_input.find(copy_word_check[i])
+        
+            copy_word_input = copy_word_input[:ii]+"@"+copy_word_input[ii+1]
+        
+        elif word[i] == "x":
+        
+            word = word[:i] + "." + word[i+1:]
+            
+    print("your word: ",word_check, "the word you had to guess: ",word)
+
+
+while word_input != word_check:
+    
+    word_input = input("enter a word: ")
+    copy_word_input = word_input
+    word = "xxxxxxxxx"
+    copy_word_check = word_check
+    
+    for i in range (9):
+        if copy_word_input[i] == copy_word_check[i]:
+        
+            word = word[:i] + copy_word_check[i].upper() + word[i+1:]
+        
+            copy_word_input = copy_word_input[:i]+"@"+copy_word_input[i+1]
+        
+            copy_word_check = copy_word_check[:i]+"!"+copy_word_check[i+1:]
+        
+    for i in range (9):
+        if copy_word_check[i] == copy_word_input[i]:
+        
+            word = word[:i] + copy_word_check[i] + word[i+1:]
+        
+            ii = copy_word_input.find(copy_word_check[i])
+        
+            copy_word_input = copy_word_input[:ii]+"@"+copy_word_input[ii+1]
+        
+        elif word[i] == "x":
+        
+            word = word[:i] + "." + word[i+1:]
+            
+    print("your word: ",word_check, "the word you had to guess: ",word)
+
+while word_input != word_check:
+    
+    word_input = input("enter a word: ")
+    copy_word_input = word_input
+    word = "xxxxxxxxxx"
+    copy_word_check = word_check
+    
+    for i in range (10):
+        if copy_word_input[i] == copy_word_check[i]:
+        
+            word = word[:i] + copy_word_check[i].upper() + word[i+1:]
+        
+            copy_word_input = copy_word_input[:i]+"@"+copy_word_input[i+1]
+        
+            copy_word_check = copy_word_check[:i]+"!"+copy_word_check[i+1:]
+        
+    for i in range (10):
+        if copy_word_check[i] == copy_word_input[i]:
+        
+            word = word[:i] + copy_word_check[i] + word[i+1:]
+        
+            ii = copy_word_input.find(copy_word_check[i])
+        
+            copy_word_input = copy_word_input[:ii]+"@"+copy_word_input[ii+1]
+        
+        elif word[i] == "x":
+        
+            word = word[:i] + "." + word[i+1:]
+            
+    print("your word: ",word_check, "the word you had to guess: ",word)
