@@ -1,0 +1,56 @@
+body {
+    background-color: rgb(107, 54, 74) ;
+}
+
+.Home {
+    text-align: center;
+}
+
+.logo {
+    margin-top: 10%;
+}
+
+.btn-wrapper {
+    margin-top: 10%;
+    display: inline-block; 
+    width: auto;
+    height: auto;
+}   
+
+
+/* CSS */
+.btn {
+  background-image: linear-gradient(92.88deg, #233CA3 9.16%, #3421AA 43.89%, #673FD7 64.72%);
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-family: "Inter UI","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  height: 4rem;
+  padding: 0 1.6rem;
+  text-align: center;
+  vertical-align: middle;
+  margin-bottom: 10px;
+  text-shadow: rgba(0, 0, 0, 0.25) 0 3px 8px;
+  transition: all .5s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  display: flex;
+
+  /*this centers the text horizontally*/
+  justify-content: center;
+
+  /*this centers the text vertically*/
+  align-items: center;
+
+}
+
+.btn:hover {
+  box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
+  transition-duration: .1s;
+}
