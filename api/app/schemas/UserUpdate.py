@@ -1,18 +1,15 @@
 from typing import Optional
 from datetime import datetime
-from pydantic import BaseModel, Field, validator
-from uuid import uuid4
+from pydantic import BaseModel, validator
 from typing_extensions import Annotated
 import re
 
-class UserCreation(BaseModel):
-    id: Annotated[str, Field(default_factory=lambda: uuid4().hex)]
-    nickname: str
-    first_name: str
+class UserUpdate(BaseModel):
+    nickname: Optional[str]   
+    first_name: Optional[str]   
     second_name: Optional[str]    
-    created_at: Annotated[datetime, Field(default_factory=lambda: datetime.now())]
-    password: str
-    email: str
+    password: Optional[str]   
+    email: Optional[str]   
     best_score: Optional[int]
 
     @validator('first_name')
