@@ -2,7 +2,7 @@ from typing import List
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 import models
-from schemas import UserCreation,Reponse
+from schemas import UserCreation,Reponse,UserUpdate,UserLogin
 
 
 #Get users
@@ -51,21 +51,20 @@ def delete_user_by_nickname(nickname: str, db: Session):
     db.commit()
 
 #Update a user account whith his nickname
-def update_account_by_id(account_id: str, properties: str, new_value: str, db: Session) -> models.user:
-    user = get_account_by_id(account_id, db)
-    for c in user:
-        if properties == c:
-            user.c = new_value
-            db.commit()
-            db.refresh(user)
+def update(userID:str,request: UserUpdate, db: Session) -> models.user:
+    user = get_account_by_id(userID, db)
+    new_data = request.dict(exclude_unset=True)
+    for key, value in new_data.items():
+        setattr(user, key, value)
+    db.commit()
+    db.refresh(user)
     return user
 
 #log in a user
-def login_user(usernickname: str, password: str, db: Session) -> models.user:
-    user = get_account_by_nickname(usernickname=usernickname, db=db)
-    # print(user)
+def login_user(identifant: UserLogin, db: Session) -> models.user:
+    user = get_account_by_nickname(nickname=identifant.nickname, db=db)
     if not user:
         raise HTTPException(status_code=409, detail="user ivalid")
-    if not user.password == password:
+    if  user.password != identifant.password:
         raise HTTPException(status_code=409, detail="password invalid")
     return user
