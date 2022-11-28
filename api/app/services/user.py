@@ -24,7 +24,7 @@ def get_account_by_nickname(nickname: str, db: Session) -> models.user:
     return user
 
 #Creat a user account
-def create_account(user: UserCreation, db: Session) -> models.user:
+def create_account(user: UserCreation, db: Session) -> int:
     _user = db.query(models.user).filter(models.user.nickname == user.nickname).first()
     if _user:
         return 0

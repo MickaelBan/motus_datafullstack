@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from models import BaseSQL,engine
-from routers import UserRouter
+from routers import UserRouter,WordRouter
 from typing import Optional
 
 
@@ -11,7 +11,7 @@ app = FastAPI(
 )
 
 app.include_router(UserRouter)
-
+app.include_router(WordRouter)
 
 @app.get("/")
 def read_root():
