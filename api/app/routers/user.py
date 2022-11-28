@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 import models
 from schemas import Reponse, UserCreation, UserUpdate, UserLogin
 from services import user as user_service
-from typing import List
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -90,3 +89,5 @@ async def delete_account_by_id(account_id: str, db: Session = Depends(models.get
 async def delete_account_by_nickname(nickname: str, db: Session = Depends(models.get_db)):
     user_service.delete_user_by_nickname(nickname=nickname, db=db)
     return Reponse(code=200, status="ok", message="user deleted successfully").dict(exclude_none=True)
+
+
