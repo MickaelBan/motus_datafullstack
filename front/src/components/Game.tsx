@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import Board from "./Board";
 
@@ -26,12 +27,8 @@ class Game extends React.Component {
 
     constructor(props: {} | Readonly<{}>){
         super(props);
+        this.fetchWord();
 
-        
-
-        this._word_to_guess = "Baobab";
-        this._word_length = this._word_to_guess.length;
-        console.log(this.state.current_user_word);
     }
 
 
@@ -50,6 +47,15 @@ class Game extends React.Component {
         console.log("Nouveau mot du user: " + this.state.current_user_word.join(''));
     }
 
+    async fetchWord() {
+        let response = await fetch('http://localhost:5000/word');
+
+        if (response.status === 200){
+            let word = await response.json();
+            this._word_to_guess = word["result"].toUpperCase();
+            this._word_length = this._word_to_guess.length;
+        }
+    }
 
     //On suppose que l'implémentation sera de telle sorte à ce que 
     //dès qu'un user appuie sur entrée, c'est pour vérifier un mot complet
@@ -125,16 +131,6 @@ class Game extends React.Component {
             alert("Bravo");
             return;
         }
-
-        console.log("xd", next_word_to_guess_from);
-        // for (let i = 1; i < this._word_length; i++){
-
-        //     let index = this._word_length*(this.state.turn_index) + i;
-
-        //     let square = document.getElementById(index.toString()) as HTMLElement;
-        //     console.log(square);
-        //     square.innerHTML = next_word_to_guess_from[index%next_word_to_guess_from.length].toUpperCase();
-        // }
 
         let prevWordFirstLetter = document.getElementById((this._word_length * (this.state.turn_index-1)).toString()) as HTMLElement;
         prevWordFirstLetter.style.backgroundColor = "red";
@@ -214,23 +210,21 @@ class Game extends React.Component {
             this.handleKeyboardInput(event);
         });
 
+        await this.fetchWord();
         let beginning_array = this.state.current_user_word;
         beginning_array.push(this._word_to_guess.charAt(0));
         this.setState({current_user_word: beginning_array});
         console.log(this.state.current_user_word);
+        console.log(this._word_to_guess)
 
-        const response = await fetch('localhost:5000/word');
-        // const data = await response.json();
-        // console.log(data);
     }
 
     render(){
-
+        
         return (
             <div>
                 <Board word_length={this._word_length} word={this._word_to_guess} />
                 <p>{this._word_to_guess}</p>
-
             </div>
         );
     }
