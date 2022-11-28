@@ -1,20 +1,19 @@
 import React from 'react';
 import * as ReactDOM from "react-dom"
 import './index.css';
-import Board from './components/Board'
 import Game from './components/Game';
-import Home from './components/Home'
-                                     
+import { Routes, Route, BrowserRouter as Router, BrowserRouter } from "react-router-dom"
+import Home from './components/Home';
+import App from './components/App';
+
 ReactDOM.render(
-  <div>
-    {/* <Home>
-
-    </Home> */}
-    <Game> 
-    </Game>
-
     
-  </div>
+    <div className='app'>
+
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </div>  
    , document.getElementById("root")
 );
 

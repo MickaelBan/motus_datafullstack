@@ -27,8 +27,9 @@ class Game extends React.Component {
     constructor(props: {} | Readonly<{}>){
         super(props);
 
-        //This is where we will query our API to get a word
-        this._word_to_guess = "Baobabs";
+        
+
+        this._word_to_guess = "Baobab";
         this._word_length = this._word_to_guess.length;
         console.log(this.state.current_user_word);
     }
@@ -82,26 +83,25 @@ class Game extends React.Component {
             while (index !== -1){
                 //cas où la lettre se trouve dans le mot à trouver, mais à une position différente
                 if (i !== index){
-                    next_word_to_guess_from[i] = '.';
                     //coloration au niveau HTML
                     let yellow_square_index = this._word_length*(this.state.turn_index - 1) + i;
                     let yellow_square = document.getElementById(yellow_square_index.toString()) as HTMLElement;
                     yellow_square.style.backgroundColor = yellow_square.style.backgroundColor ? yellow_square.style.backgroundColor : "yellow"
                     
                     
-                    //modification de la lettre au niveau HTML
-                    let modified_square_index = this._word_length*(this.state.turn_index) + i
-                    const square: HTMLElement = document.getElementById(modified_square_index.toString()) as HTMLElement;
-                    square.innerHTML = square.innerHTML ? square.innerHTML : '.';
+                    // //modification de la lettre au niveau HTML
+                    // let modified_square_index = this._word_length*(this.state.turn_index) + i
+                    // const square: HTMLElement = document.getElementById(modified_square_index.toString()) as HTMLElement;
+                    // square.innerHTML = square.innerHTML ? square.innerHTML : '.';
                 }
                 else {
                     next_word_to_guess_from[i] = this._word_to_guess[index];
                     
                     
-                    //modification de la lettre au niveau HTML
-                    let modified_square_index = this._word_length*(this.state.turn_index) + i
-                    const square: HTMLElement = document.getElementById((modified_square_index).toString()) as HTMLElement;
-                    square.innerHTML = user_answer[i].toUpperCase();
+                    // //modification de la lettre au niveau HTML
+                    // let modified_square_index = this._word_length*(this.state.turn_index) + i
+                    // const square: HTMLElement = document.getElementById((modified_square_index).toString()) as HTMLElement;
+                    // square.innerHTML = user_answer[i].toUpperCase();
 
                     //coloration au niveau HTML
                     let red_square_index = this._word_length * (this.state.turn_index-1) + i;
@@ -112,16 +112,29 @@ class Game extends React.Component {
 
                 index = this._word_to_guess.indexOf(user_answer[i], index + 1);
 
-                //updating the occurrence map
-
+            }
+            if (occMap.get(user_answer[i]) === undefined){
+                next_word_to_guess_from[i] = '.';
             }
         }
+
+        
 
         if (user_answer === this._word_to_guess){
             //route to victory page
             alert("Bravo");
             return;
-        } 
+        }
+
+        console.log("xd", next_word_to_guess_from);
+        // for (let i = 1; i < this._word_length; i++){
+
+        //     let index = this._word_length*(this.state.turn_index) + i;
+
+        //     let square = document.getElementById(index.toString()) as HTMLElement;
+        //     console.log(square);
+        //     square.innerHTML = next_word_to_guess_from[index%next_word_to_guess_from.length].toUpperCase();
+        // }
 
         let prevWordFirstLetter = document.getElementById((this._word_length * (this.state.turn_index-1)).toString()) as HTMLElement;
         prevWordFirstLetter.style.backgroundColor = "red";
@@ -196,7 +209,7 @@ class Game extends React.Component {
     }
 
 
-    componentDidMount(){
+    async componentDidMount(){
         window.addEventListener("keyup", (event) => {
             this.handleKeyboardInput(event);
         });
@@ -205,6 +218,10 @@ class Game extends React.Component {
         beginning_array.push(this._word_to_guess.charAt(0));
         this.setState({current_user_word: beginning_array});
         console.log(this.state.current_user_word);
+
+        const response = await fetch('localhost:5000/word');
+        // const data = await response.json();
+        // console.log(data);
     }
 
     render(){
