@@ -54,13 +54,30 @@ class Game extends React.Component {
     //dès qu'un user appuie sur entrée, c'est pour vérifier un mot complet
     checkAnswer(): void{
 
+        let occMap: Map<string, number> = new Map();
+
         let user_answer: string = this.state.current_user_word.join('');
         let next_word_to_guess_from: Array<string> = this.state.current_user_word;
         next_word_to_guess_from[0] = this._word_to_guess[0];
 
 
         for (let i = 1; i < this._word_length; i++){
-            let index = this._word_to_guess.indexOf(user_answer[i]);
+
+            let lastOccPosition = occMap.get(user_answer[i]);
+            let positionToSearchFrom = 1
+
+            if (lastOccPosition !== undefined)
+                if (i === lastOccPosition)
+                    positionToSearchFrom = lastOccPosition;
+                else
+                    positionToSearchFrom = lastOccPosition + 1;
+            
+            else
+                positionToSearchFrom = 1;
+            
+                
+
+            let index = this._word_to_guess.indexOf(user_answer[i], positionToSearchFrom);
             //Tant que la lettre apparaît à partir de la position précisée (1 initialement)
             while (index !== -1){
                 //cas où la lettre se trouve dans le mot à trouver, mais à une position différente
@@ -91,24 +108,28 @@ class Game extends React.Component {
                     let red_square = document.getElementById(red_square_index.toString()) as HTMLElement;
                     red_square.style.backgroundColor = "red";
                 }
+                occMap.set(user_answer[i], index);
+
                 index = this._word_to_guess.indexOf(user_answer[i], index + 1);
+
+                //updating the occurrence map
 
             }
         }
-
-
-        let first_letter = document.getElementById((this._word_length*this.state.turn_index).toString()) as HTMLElement;
-        first_letter.innerHTML = next_word_to_guess_from[0];
-        first_letter.style.backgroundColor = "red";
-        this.setState({letter_position: this.state.letter_position + 1});
-        this.setState({turn_index: this.state.turn_index+1});
 
         if (user_answer === this._word_to_guess){
             //route to victory page
             alert("Bravo");
             return;
-        }
+        } 
 
+        let prevWordFirstLetter = document.getElementById((this._word_length * (this.state.turn_index-1)).toString()) as HTMLElement;
+        prevWordFirstLetter.style.backgroundColor = "red";
+
+        let nextWordFirstLetter = document.getElementById((this._word_length * (this.state.turn_index)).toString()) as HTMLElement;
+        nextWordFirstLetter.innerHTML = this._word_to_guess[0];
+        this.setState({letter_position: this.state.letter_position + 1});
+        this.setState({turn_index: this.state.turn_index+1});
 
         
     }
