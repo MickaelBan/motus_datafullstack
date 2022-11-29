@@ -4,7 +4,8 @@ networks:
   default:
     driver: bridge
 services:
-  api:
+  backend:
+    container_name: api
     build:
       context: ./api
       dockerfile: Dockerfile
@@ -19,6 +20,7 @@ services:
       - ./api/.env
 
   db:
+    container_name: api_db
     image: postgres
     restart: always
     env_file:
@@ -26,14 +28,15 @@ services:
     ports:
     - "5432:5432"
 
-  # webapp:
-  #   build: 
-  #     context: ./front
-  #     dockerfile: Dockerfile
-  #   networks:
-  #     - default
-  #   volumes:
-  #     - ./app/:/app
-  #   command: ["npm", "start"]
-  #   ports:
-  #   - "3000:3000"
+  front:
+    container_name: webapp
+    build: 
+      context: ./front
+      dockerfile: Dockerfile
+    networks:
+      - default
+    volumes:
+      - ./front:/app
+    command: ["npm", "start"]
+    ports:
+    - "3000:3000"

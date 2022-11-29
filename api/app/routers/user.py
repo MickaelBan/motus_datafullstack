@@ -23,7 +23,8 @@ async def get_account(account_id: str, db: Session = Depends(models.get_db)):
     user = user_service.get_account_by_id(account_id=account_id, db=db)
     if user == None:
         return Reponse(code=100, status="bad", message="user not found").dict()
-    return Reponse(code=200, status="ok", message="Success get user").dict()
+    user = user_service.get_account_by_id(account_id=account_id, db=db)
+    return Reponse(code=200, status="ok", message="Success get user", result=user).dict()
 
 @router.get("/{nickname}")
 async def get_account(nickname: str, db: Session = Depends(models.get_db)):
@@ -66,7 +67,7 @@ async def create_account(request: UserCreation, db: Session = Depends(models.get
     elif user == 0 :
         return Reponse(code=100, status="bad", message="nickname already exist", result=user).dict(exclude_none=True)
     elif user == 2 :
-        return Reponse(code=101, status="bad", message="password already exist", result=user).dict(exclude_none=True)
+        return Reponse(code=101, status="bad", message="email already exist", result=user).dict(exclude_none=True)
     
 
 @router.put("/id_{account_id}/update")

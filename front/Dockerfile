@@ -4,9 +4,9 @@ RUN mkdir -p /app
 
 WORKDIR /app
 
-COPY . .
-COPY ./node_modules/react-scripts/bin/react-scripts.js ./node_modules/react-scripts/bin
+COPY ./ .
 
-RUN npm install -g create-react-app
 
-EXPOSE 3000
+RUN npm install 
+RUN npm install create-react-app 
+RUN npm install react-scripts 
