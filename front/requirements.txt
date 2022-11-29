@@ -1,2 +1,5 @@
 npm
 create-react-app
+react-scripts
+react-router-dom
+axios

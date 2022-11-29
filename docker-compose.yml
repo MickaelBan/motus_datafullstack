@@ -33,10 +33,9 @@ services:
     build: 
       context: ./front
       dockerfile: Dockerfile
+    volumes:
+      - ./front/src:/app/src
     networks:
       - default
-    volumes:
-      - ./front:/app
-    command: ["npm", "start"]
     ports:
     - "3000:3000"

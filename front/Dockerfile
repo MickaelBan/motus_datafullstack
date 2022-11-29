@@ -4,9 +4,16 @@ RUN mkdir -p /app
 
 WORKDIR /app
 
-COPY ./ .
-
+COPY ./package*.json .
 
 RUN npm install 
 RUN npm install create-react-app 
 RUN npm install react-scripts 
+RUN npm install react-router-dom
+RUN npm install axios;
+
+
+COPY ./ .
+
+#RUN npm run build
+CMD [ "npm", "start" ]
