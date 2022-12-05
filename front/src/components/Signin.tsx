@@ -1,6 +1,5 @@
 import React from "react";
-import { Navigate } from "react-router-dom"
-import { SimpleForm } from "./SimpleForm";
+import { SigninForm } from "./SigninForm";
 import "./Sign.css"
 
 export class Signin extends React.Component {
@@ -18,7 +17,7 @@ export class Signin extends React.Component {
         const data = this.state;
 
         return(
-            <SimpleForm legend="Connexion" route="/users/login" method="POST"></SimpleForm>
+            <SigninForm legend="Connexion" route="/users/login" method="POST"></SigninForm>
         )
     }
 }

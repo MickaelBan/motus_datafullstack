@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { SimpleForm } from "./SimpleForm";
+import { DeleteAccForm } from "./DeleteAccForm";
 
 type DelProps = {
     username?: string
@@ -15,7 +15,7 @@ const DeleteAcc = () => {
     console.log(route);
 
     return(
-        <SimpleForm legend="Supprimer son compte" route={route} method="DELETE" isDelete={true}></SimpleForm>
+        <DeleteAccForm legend="Supprimer son compte" route={route} method="DELETE" isDelete={true}></DeleteAccForm>
     );
 
 }

@@ -1,11 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import ComplexForm from "./ComplexForm";
-import { SimpleForm } from "./SimpleForm";
+import UpdateForm from "./UpdateForm";
 
-type DelProps = {
-    username?: string
-}
 
 const Update = () => {
 
@@ -16,7 +12,7 @@ const Update = () => {
     console.log(route);
 
     return(
-        <ComplexForm legend="Mettre à jour son compte" route={route} method="PUT"></ComplexForm>
+        <UpdateForm legend="Mettre à jour son compte" route={route} method="PUT"></UpdateForm>
     );
 
 }

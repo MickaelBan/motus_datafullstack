@@ -5,27 +5,23 @@ import "./Sign.css"
 type FormProps = {
     legend: string,
     route: string,
-    method: string,
-    isSignup?: boolean,
-    isDelete?: boolean,
+    method: string
 }
 
 type FormState = {
+    username?: string,
     willRedirect: boolean
 }
 
 
-
-export class SimpleForm extends React.Component<FormProps, FormState> {
-
-    private _username: string = "";
-    private _willBeDisconnected: boolean = false;
+export class SignupForm extends React.Component<FormProps, FormState> {
 
 
     constructor(props: FormProps | Readonly<FormProps>){
         super(props);
 
         this.state = {
+            username: "",
             willRedirect: false
         }
     }
@@ -42,7 +38,7 @@ export class SimpleForm extends React.Component<FormProps, FormState> {
             "Content-Type": "application/json",
         };
 
-        const route = `http://localhost:5000${this.props.route}`
+        const route = `http://localhost:5000${this.props.route}${this.state.username}`
 
         console.log(route);
 
@@ -52,28 +48,19 @@ export class SimpleForm extends React.Component<FormProps, FormState> {
             body: dataBody
         });
 
-        console.log(rawResponse);
-
 
         const jsn = await rawResponse.json();
         const statusCode = jsn["code"];
 
         if (statusCode === "200"){
-
-            if (this.props.isDelete){
-                this._username = "invité";
-                this._willBeDisconnected = true;
-
-            }
-            else{
-                const username = document.getElementById("signinUsername") as HTMLInputElement;
-                this._username = username.value;
-            }            
+            const username = document.getElementById("signinUsername") as HTMLInputElement;
+            const value = username.value;
+            this.setState({username: value})
             this.setState({willRedirect: true})
+            alert("Votre compte a bien été créé !")
 
         }
         else {
-
             const nickLabel = document.getElementById("nickLabel") as HTMLElement;
             const pwdLabel = document.getElementById("passwordLabel") as HTMLElement;
 
@@ -102,14 +89,26 @@ export class SimpleForm extends React.Component<FormProps, FormState> {
         const redir = this.state.willRedirect;
 
         return(
-            redir ? <Navigate to="/" state={{data: this._username, forcesLogout: !this._willBeDisconnected}}/> : 
+            redir ? <Navigate to="/"/> : 
             <div className="form-style-5">
                 <form method={this.props.method} id="signinForm">
                     <fieldset>
                         <legend>{this.props.legend}</legend>
-                                <label id="nickLabel">Pseudo<p className="mandatory">*</p></label>
-                                <input type="text" name="nickname" id="signinUsername" placeholder="benisdureau"/>
-                
+                       
+                        <label id="nickLabel">Pseudo<p className="mandatory">*</p></label>
+                        <input type="text" name="nickname" id="signinUsername" placeholder="benisdureau"/>
+                   
+
+                        <label>Prénom<p className="mandatory">*</p></label>
+                        <input type="text" name="first_name" id="first_name" placeholder="Denis"/>
+
+                        <label>Nom</label>
+                        <input type="text" name="second_name" placeholder="Bureau"/>
+                        
+                        <label>Ton mail <p className="mandatory">*</p></label>
+                        <input type="email" name="email" placeholder="denis.bureau@java.love"/>
+
+                        
                         
                         <label id="passwordLabel">Mot de passe <p className="mandatory">*</p></label>
                         <input type="password" name="password" id="signinPwd" placeholder="Mot de passe"/>
@@ -121,3 +120,5 @@ export class SimpleForm extends React.Component<FormProps, FormState> {
         );
     }
 }
+
+export default SignupForm;

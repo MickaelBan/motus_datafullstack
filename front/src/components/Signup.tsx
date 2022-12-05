@@ -1,7 +1,6 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
 import "./Sign.css"
-import { ComplexForm } from "./ComplexForm";
+import { SignupForm } from "./SignupForm";
 
 
 
@@ -19,7 +18,7 @@ class Signup extends React.Component {
         const willRedirect: boolean = this.state.willRedirect;
         
         return(
-            <ComplexForm legend="Ton inscription" route="/users/create" method="POST"></ComplexForm>
+            <SignupForm legend="Ton inscription" route="/users/create" method="POST"></SignupForm>
         );
     }
 }
