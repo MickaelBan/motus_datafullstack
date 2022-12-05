@@ -14,7 +14,6 @@ type FormState = {
 }
 
 
-
 export class ComplexForm extends React.Component<FormProps, FormState> {
 
 
@@ -58,6 +57,7 @@ export class ComplexForm extends React.Component<FormProps, FormState> {
             const value = username.value;
             this.setState({username: value})
             this.setState({willRedirect: true})
+            alert("Votre compte a bien été créé !")
 
         }
         else {

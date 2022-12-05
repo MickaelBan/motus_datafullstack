@@ -1,5 +1,7 @@
 import pandas as pd
 import random as rd
+import unidecode
+
 
 
 lex = pd.read_csv("http://www.lexique.org/databases/Lexique382/Lexique382.tsv", sep='\t')
@@ -31,4 +33,6 @@ def get_word() -> str:
         if rd.randint(0,1) :
             word = noms_hi.sample(N).ortho.to_string(index=False)
         word = verbs_hi.sample(N).ortho.to_string(index=False)
-    return word
+    unaccented_string = unidecode.unidecode(word)
+    
+    return unaccented_string

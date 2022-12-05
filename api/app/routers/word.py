@@ -7,6 +7,7 @@ from services import word as word_service
 router = APIRouter(prefix="/word", tags=["users"])
 
 
+
 @router.get("/health")
 async def health():
     return Reponse(code=200, status="ok", message="Success").dict(exclude_none=True)

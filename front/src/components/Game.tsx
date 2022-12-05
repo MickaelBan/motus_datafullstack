@@ -1,4 +1,5 @@
 import React from "react";
+import { Navigate } from "react-router-dom";
 import Board from "./Board";
 
 /**
@@ -8,43 +9,18 @@ import Board from "./Board";
  */
 type GameState = {
     turn_index: number
-    letter_position: number,
-    current_user_word: string[]
+    input_length: number
+    gameOver: boolean
   }
 
 
-class Game extends React.Component {
+class Game extends React.Component<any, GameState> {
 
     private _word_to_guess: string = "";
     private _word_length: number = 0;
+    private _gameOver: boolean = false;
     
-    state: GameState = {
-        turn_index: 1,
-        letter_position: 1,
-        current_user_word: new Array<string>()
-    }
 
-    constructor(props: {} | Readonly<{}>){
-        super(props);
-        this.fetchWord();
-
-    }
-
-
-    updateUserWord(letter_input: string, id_to_be_modified: number): void{
-
-        let newArray: string[] = this.state.current_user_word;
-
-        //handling the case where the user wanted to delete the last letter of its word
-        if (letter_input === '.'){
-            newArray[id_to_be_modified%this._word_length -1] = "."
-        }
-        else {
-            newArray[id_to_be_modified%this._word_length] = letter_input;
-        }
-        this.setState({current_user_word: newArray});
-        console.log("Nouveau mot du user: " + this.state.current_user_word.join(''));
-    }
 
     async fetchWord() {
         let response = await fetch('http://localhost:5000/word');
@@ -56,144 +32,170 @@ class Game extends React.Component {
         }
     }
 
-    //On suppose que l'implémentation sera de telle sorte à ce que 
-    //dès qu'un user appuie sur entrée, c'est pour vérifier un mot complet
-    // checkAnswer(): void{
+    checkAnswer(): void {
 
-    //     let occMap: Map<string, number> = new Map();
+        let acc: string = this._word_to_guess[0];
 
-    //     let user_answer: string = this.state.current_user_word.join('');
-    //     let next_word_to_guess_from: Array<string> = this.state.current_user_word;
-    //     next_word_to_guess_from[0] = this._word_to_guess[0];
+        let letter_pos = (this.state.turn_index - 1) * this._word_length + 1;
+
+        let threshold = letter_pos - 1 + this._word_length;
+
+        let offset = 0;
+
+        //Stores the last occurrence of a given letter we came across through our research
+        const lastOccMap: Map<string, number> = new Map();
 
 
-    //     for (let i = 1; i < this._word_length; i++){
+        for (let i = letter_pos; i < threshold; i++){
+            const square = document.getElementById(i.toString()) as HTMLElement;
+            const letter = square.innerHTML;
 
-    //         let lastOccPosition = occMap.get(user_answer[i]);
-    //         let positionToSearchFrom = 1
 
-    //         if (lastOccPosition !== undefined)
-    //             if (i === lastOccPosition)
-    //                 positionToSearchFrom = lastOccPosition;
-    //             else
-    //                 positionToSearchFrom = lastOccPosition + 1;
-            
-    //         else
-    //             positionToSearchFrom = 1;
-            
+            if (letter === this._word_to_guess[i%this._word_length]){
+                square.style.backgroundColor = "red";
+                const index = i + this._word_length;
+
+                const el = document.getElementById(index.toString()) as HTMLElement;
+                el.innerHTML = letter;
+            }
+            else {
+                const occPos = this._word_to_guess.indexOf(letter, offset);
+
+                if (occPos !== - 1){
+                    if (occPos === i%this._word_length){
                 
+                        //coloration HTML rouge
+                        square.style.backgroundColor = "red";
+                        const index = i + this._word_length;
+    
+                        const el = document.getElementById(index.toString()) as HTMLElement;
+                        el.innerHTML = letter;
+                    }
+    
+                    else if (occPos !== i%this._word_length){
+    
+                        let lastOcc = lastOccMap.get(letter);
+    
+                        //lettre pas encore rencontrée
+                        if (lastOcc === undefined){
+                            square.style.backgroundColor = "yellow";
+                            
+                        }
+                        else {
+                            let lastOccInGuessWord = this._word_to_guess.lastIndexOf(letter);
+                            if (lastOccInGuessWord > i%this._word_length){
+                                square.style.backgroundColor = "yellow";
+                            }
+                        }
+                    }
+                }
+                lastOccMap.set(letter, occPos);
 
-    //         let index = this._word_to_guess.indexOf(user_answer[i], positionToSearchFrom);
-    //         //Tant que la lettre apparaît à partir de la position précisée (1 initialement)
-    //         while (index !== -1){
-    //             //cas où la lettre se trouve dans le mot à trouver, mais à une position différente
-    //             if (i !== index){
-    //                 //coloration au niveau HTML
-    //                 let yellow_square_index = this._word_length*(this.state.turn_index - 1) + i;
-    //                 let yellow_square = document.getElementById(yellow_square_index.toString()) as HTMLElement;
-    //                 yellow_square.style.backgroundColor = yellow_square.style.backgroundColor ? yellow_square.style.backgroundColor : "yellow"
-                    
-                    
-    //                 // //modification de la lettre au niveau HTML
-    //                 // let modified_square_index = this._word_length*(this.state.turn_index) + i
-    //                 // const square: HTMLElement = document.getElementById(modified_square_index.toString()) as HTMLElement;
-    //                 // square.innerHTML = square.innerHTML ? square.innerHTML : '.';
-    //             }
-    //             else {
-    //                 next_word_to_guess_from[i] = this._word_to_guess[index];
-                    
-                    
-    //                 // //modification de la lettre au niveau HTML
-    //                 // let modified_square_index = this._word_length*(this.state.turn_index) + i
-    //                 // const square: HTMLElement = document.getElementById((modified_square_index).toString()) as HTMLElement;
-    //                 // square.innerHTML = user_answer[i].toUpperCase();
+            }
 
-    //                 //coloration au niveau HTML
-    //                 let red_square_index = this._word_length * (this.state.turn_index-1) + i;
-    //                 let red_square = document.getElementById(red_square_index.toString()) as HTMLElement;
-    //                 red_square.style.backgroundColor = "red";
-    //             }
-    //             occMap.set(user_answer[i], index);
 
-    //             index = this._word_to_guess.indexOf(user_answer[i], index + 1);
+            acc+=letter;
+        }
 
-    //         }
-    //         if (occMap.get(user_answer[i]) === undefined){
-    //             next_word_to_guess_from[i] = '.';
-    //         }
-    //     }
-
+        console.log(acc);
         
 
-    //     if (user_answer === this._word_to_guess){
-    //         //route to victory page
-    //         alert("Bravo");
-    //         return;
-    //     }
+        console.log(lastOccMap);
 
-    //     let prevWordFirstLetter = document.getElementById((this._word_length * (this.state.turn_index-1)).toString()) as HTMLElement;
-    //     prevWordFirstLetter.style.backgroundColor = "red";
+        const firstLetterPos = (this.state.turn_index - 1) * this._word_length;
 
-    //     let nextWordFirstLetter = document.getElementById((this._word_length * (this.state.turn_index)).toString()) as HTMLElement;
-    //     nextWordFirstLetter.innerHTML = this._word_to_guess[0];
-    //     this.setState({letter_position: this.state.letter_position + 1});
-    //     this.setState({turn_index: this.state.turn_index+1});
+        const firstLetter = document.getElementById(firstLetterPos.toString()) as HTMLElement;
+        firstLetter.style.backgroundColor = "red";
 
-        
-    // }
 
-    // /**
-    //  * 
-    //  * @param keyPressed
-    //  * @param letter_position 
-    //  */
-    // modifyLetter(keyPressed: string, letter_position: number): void{
+        if (acc === this._word_to_guess){
+            alert("You have won!");
+            this._gameOver = true;
+            return;
+        }
 
-    //     const square = document.getElementById(letter_position.toString()) as HTMLElement;
-    //     square.innerHTML = keyPressed.toUpperCase();
+        offset+=1;
 
-    //     //This allows us to use the modifyLetter method to handle the backspace presses
-    //     let magic = keyPressed === '.' ? -1 : 1;
-    //     this.updateUserWord(keyPressed, this.state.letter_position);
-    //     this.setState({letter_position: this.state.letter_position + magic});
+        this.setState({turn_index: this.state.turn_index + 1, input_length: 1})
 
-    // }
+        if (this.state.turn_index === 6){
+            alert("Jeu perdu, le mot à deviner était " + this._word_to_guess);
+            this._gameOver = true;
+        }
+
+        const firstLetterNextLine = document.getElementById((firstLetterPos + this._word_length).toString()) as HTMLElement;
+        firstLetterNextLine.innerHTML = firstLetter.innerHTML;
+    }
+
+    
+    /**
+     * This method is used to handle special characters: Enter, and Backspace, 
+     * as they allow the user to either validate a word, or delete a letter from it.
+     * @param p the speJ'ai réusscial key pressed by the user.current_user_word:
+     */
+    handleSpecialCharacters(p: string): void{
+        if (p === "Enter"){
+            console.log("entree");
+            if (this.state.input_length !== this._word_length)
+                alert("Mot incomplet");    
+            else
+               this.checkAnswer();
+        }
+        else if (p === "Backspace"){
+            if (this.state.input_length > 1){
+                
+                this.modifyLetter('.', (this.state.turn_index - 1) * this._word_length + this.state.input_length - 1);
+                this.setState({input_length: this.state.input_length - 1});
+            }
+        }
+    
+    }
+
+    /**
+     * 
+     * @param keyPressed
+     * @param letter_position 
+     */
+    modifyLetter(keyPressed: string, letter_position: number): void{
+
+        const square = document.getElementById(letter_position.toString()) as HTMLElement;
+        square.innerHTML = keyPressed.toUpperCase();
+    }
     /**
      * This method is used to handle special characters: Enter, and Backspace, 
      * as they allow the user to either validate a word, or delete a letter from it.
      * @param p the speJ'ai réusscial key pressed by the user.
      */
-    // s
+    
 
     //Method used to handle keyboard inputs
-    // handleKeyboardInput(event: KeyboardEvent): void{
+    handleKeyboardInput(event: KeyboardEvent): void{
 
-    //     let p = event.key;
+        let p = event.key;
 
-    //     if (this.state.letter_position%this._word_length !== 0){
+        if (this.state.input_length !== this._word_length){
 
-    //         console.log(p);
-
-    //         let regexp = /^[a-zA-Z]+$/
-    //         let a = regexp.test(p);
+            let regexp = /^[a-zA-Z]+$/
+            let a = regexp.test(p);
         
-    //         if (a && p.length < 2){
-    //             this.modifyLetter(p, this.state.letter_position);
-    //         }
-    //     }
-    //     this.handleSpecialCharacters(p);
-    // }
+            if (a && p.length < 2){
+                this.modifyLetter(p, this.state.input_length + (this.state.turn_index - 1) * this._word_length);
+                this.setState({input_length: this.state.input_length + 1})
+            }
+        }
+        this.handleSpecialCharacters(p);
+    }
 
 
     async componentDidMount(){
-        // window.addEventListener("keyup", (event) => {
-        //     this.handleKeyboardInput(event);
-        // });
+        window.addEventListener("keydown", (event) => {
+            this.handleKeyboardInput(event);
+        });
+
+        console.log("ee")
 
         await this.fetchWord();
-        let beginning_array = this.state.current_user_word;
-        beginning_array.push(this._word_to_guess.charAt(0));
-        this.setState({current_user_word: beginning_array});
+        this.setState({turn_index: 1, input_length: 1})
 
 
     }
@@ -204,8 +206,8 @@ class Game extends React.Component {
         
         return (
             <div>
+                {this._gameOver && <Navigate to="/"/>}
                 <Board word_length={this._word_length} word={this._word_to_guess} />
-                <p>{this._word_to_guess}</p>
             </div>
         );
     }

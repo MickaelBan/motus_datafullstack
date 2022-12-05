@@ -1,12 +1,16 @@
 import React from 'react';
 import * as ReactDOM from "react-dom"
+import {createRoot} from "react-dom/client"
 import './index.css';
-import Game from './components/Game';
-import { Routes, Route, BrowserRouter as Router, BrowserRouter } from "react-router-dom"
-import Home from './components/Home';
+import { BrowserRouter } from "react-router-dom"
 import App from './components/App';
 
-ReactDOM.render(
+
+const container = document.getElementById('root') as HTMLElement;
+
+const root = createRoot(container);
+
+root.render(
     
     <div className='app'>
 
@@ -14,7 +18,6 @@ ReactDOM.render(
         <App />
       </BrowserRouter>
     </div>  
-   , document.getElementById("root")
 );
 
 

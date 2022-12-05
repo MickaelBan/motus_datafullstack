@@ -40,12 +40,12 @@ const Home = () => {
         </div>
 
         <div className='btn-wrapper'>
-            <div className='btn' id='play-btn'><Link to="signup">Inscription</Link></div>
-            <div className='btn' id='login-btn'><Link to="signin">Connexion</Link></div>
+            {!isConnected && <div className='btn' id='play-btn'><Link to="signup">Inscription</Link></div>}
+            {!isConnected && <div className='btn' id='login-btn'><Link to="signin">Connexion</Link></div>}
             <div className='btn' id='signin-btn'><Link to="game">Jouer</Link></div>
             {isConnected && 
             <div className="btn" id="modifyPwdBtn">
-              <Link to="update" state={{data: userName}}>Modifier mot de passe</Link>
+              <Link to="update" state={{data: userName}}>Modifier compte</Link>
             </div>}
 
 
