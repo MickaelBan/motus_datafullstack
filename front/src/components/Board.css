@@ -4,7 +4,7 @@
   }
 
   .board {
-    width: fit-content;
+    width: fit-content
   }
   
   .board-row:after {
@@ -51,5 +51,10 @@
   
   .game-info {
     margin-left: 20px;
+  }
+
+  .square {
+    width: 100px;
+    height: 60px;
   }
   

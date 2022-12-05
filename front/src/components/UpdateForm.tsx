@@ -1,3 +1,4 @@
+import { stringify } from "querystring";
 import React from "react";
 import { Navigate } from "react-router-dom";
 import "./Sign.css"
@@ -28,11 +29,39 @@ export class UpdateForm extends React.Component<FormProps, FormState> {
 
     async handleSubmit(e: Event){
 
+
         e.preventDefault();
 
         const data = new FormData(e.target as HTMLFormElement);
+    
 
-        const dataBody = JSON.stringify(Object.fromEntries(data));
+        let acc = "{"
+
+
+        console.log(acc);
+
+        for (const [key, value] of data.entries()){
+            
+            if (value !== "")
+                acc = acc + `"${key}": "${value}",`
+
+        }
+
+        let inter = acc.length === 0 ? "{}" : acc.substring(0, acc.length-1) + "}" 
+        acc = inter
+
+        console.log(acc);
+
+    
+
+        // const nonBlankObject = Object.fromEntries(Object.entries(data).filter(([_, v]) => v != null));
+
+        // console.log(nonBlankObject)
+
+        // const dataBody = JSON.stringify(nonBlankObject);
+
+        // console.log(dataBody);
+        
     
         const postHeaders = {
             "Content-Type": "application/json",
@@ -45,7 +74,7 @@ export class UpdateForm extends React.Component<FormProps, FormState> {
         const rawResponse = await fetch(`http://localhost:5000${this.props.route}`, {
             method: this.props.method, 
             headers: postHeaders,
-            body: dataBody
+            body: acc
         });
 
 
