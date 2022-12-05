@@ -1,19 +1,17 @@
-FROM node:19.1.0
+# FROM node:19.1.0
 
-RUN mkdir -p /app
+# RUN mkdir -p /app
 
-WORKDIR /app
+# WORKDIR /app
 
-COPY ./package*.json .
+# COPY ./package*.json .
 
-RUN npm install 
-RUN npm install create-react-app 
-RUN npm install react-scripts 
-RUN npm install react-router-dom
-RUN npm install axios;
+# RUN npm install 
+# RUN npm install create-react-app 
+# RUN npm install react-scripts 
+# RUN npm install react-router-dom
 
+# COPY ./ .
 
-COPY ./ .
-
-#RUN npm run build
-CMD [ "npm", "start" ]
+# #RUN npm run build
+# CMD [ "npm", "start" ]

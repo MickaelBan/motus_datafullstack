@@ -27,7 +27,7 @@ export class Board extends React.Component<BoardProps> {
             Array(6).fill(0).map((el, index) => (
               <div className="board-row">
               {Array(this.props.word_length).fill(0).map((el2, index2) => (
-                  index == 0 && index2 == 0 
+                  index === 0 && index2 === 0 
                   ? this.renderSquare(this.props.word.charAt(0), this.props.word_length*index + index2) 
                   : this.renderSquare('.', this.props.word_length*index + index2)
               ))}

@@ -36,23 +36,7 @@ class UserCreation(BaseModel):
             raise ValueError("First name can't be null")
         if len(nn) > 40 : 
             raise ValueError("First name size must be less than 40")
-        return nn
-     
-    @validator('password')
-    def check_password(passw:str):
-        if not re.search(r"[\d]+",passw):
-            raise ValueError("Password must contain at least one digit.")
-        if not re.search(r"[A-Z]+", passw):
-            raise ValueError("Password must contain at least one capital letter.")
-        if not re.search(r"[a-z]+", passw):
-            raise ValueError("Password must contain at least one lowercase letter.")
-        if not re.search(r"[\/.*@&$€()\[\]]",passw):
-            raise ValueError("Password must contain at least one special character: /.*@&$€()\[\]")
-        if len(passw) < 6 : 
-            raise ValueError("Password size must be greater than 6")
-        if re.search(r"[!;,:\\,ù¨^#]",passw):
-            raise ValueError("Password contain an illegal character: !;,:\\,ù¨^#")
-        return passw
+        return nn   
     
     class Config:
         orm_mode = True

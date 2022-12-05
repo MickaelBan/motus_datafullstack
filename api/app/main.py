@@ -11,10 +11,14 @@ app = FastAPI(
     description="My description",
     version="0.0.1",
 )
-origins = [
-    "http://localhost",    
-    "http://localhost:3000",
-]
+# origins = [
+#     "http://localhost",    
+#     "http://localhost:3000",
+#     "http://localhost:3000/signin",
+#     "http://localhost:3000/update"
+# ]
+
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware, 

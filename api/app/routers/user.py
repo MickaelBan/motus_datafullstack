@@ -41,10 +41,8 @@ async def login_user(identifants: UserLogin, db: Session = Depends(models.get_db
     if login == 1 :
         user = user_service.get_account_by_nickname(nickname=identifants.nickname,db=db)
         return Reponse(code=200, status="ok", message="user login successfully", result=user).dict(exclude_none=True)
-    elif login == 0 :
-        return Reponse(code=100, status="bad", message="incorrecte nickname").dict(exclude_none=True)
-    elif login == 2 :
-        return Reponse(code=100, status="bad", message="incorrecte password").dict(exclude_none=True)
+    else:
+        return Reponse(code=400, status="bad", message="Incorrect nickname or password").dict(exclude_none=True)
          
 
 
@@ -70,9 +68,17 @@ async def create_account(request: UserCreation, db: Session = Depends(models.get
         return Reponse(code=101, status="bad", message="email already exist", result=user).dict(exclude_none=True)
     
 
-@router.put("/id_{account_id}/update")
+@router.put("/update/id_{account_id}")
 async def update_account_by_id(account_id: str, request: UserUpdate, db: Session = Depends(models.get_db) ):
     user = user_service.update(userID=account_id, request=request, db=db)
+    if user == 1 :
+        return Reponse(code=200, status="ok", message="Success update user", result=user).dict(exclude_none=True)
+    return Reponse(code=100, status="bad", message="unknwow",result=user).dict()
+
+@router.put("/update/{nickname}")
+async def update_account_by_id(nickname: str, request: UserUpdate, db: Session = Depends(models.get_db) ):
+    user = user_service.get_account_by_nickname(nickname=nickname,db=db)
+    user = user_service.update(userID=user.id, request=request, db=db)
     if user == 1 :
         return Reponse(code=200, status="ok", message="Success update user", result=user).dict(exclude_none=True)
     return Reponse(code=100, status="bad", message="unknwow",result=user).dict()

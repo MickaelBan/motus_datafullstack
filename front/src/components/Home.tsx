@@ -1,27 +1,65 @@
-import { render } from '@testing-library/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Home.css';
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
-class Home extends React.Component {
+const Home = () => {
+
+  const [userName, setUsername] = useState("invité");
+  const [isConnected, setConnected] = useState(false);
+  
+  const location = useLocation();
 
 
-  render(){
+  useEffect(() => {
+
+
+    const prevState = location.state;
+
+    if (prevState !== null){
+      console.log(prevState);
+      setUsername(prevState.data);
+      setConnected(prevState.forcesLogout);
+      console.log(prevState.forcesLogout)
+    }
+
+    window.addEventListener("onclick", () => {
+
+    })
+
+  }, []);
+
     return (
       <div className="Home">
-        <div className='logo'>
-            <p>TUSMO by </p>
+        <div className='logos'>
+            <div className="tusmologo"><img width="509" height="176" src="assets/motus.png"/></div>
             <img src="assets/logo.svg"/>        
         </div>
 
+        <div className='welcome'>
+          <p>Bienvenue, {userName}</p>
+        </div>
+
         <div className='btn-wrapper'>
-            <div className='btn' id='play-btn'>Inscription</div>
-            <div className='btn' id='login-btn'>Connexion</div>
+            <div className='btn' id='play-btn'><Link to="signup">Inscription</Link></div>
+            <div className='btn' id='login-btn'><Link to="signin">Connexion</Link></div>
             <div className='btn' id='signin-btn'><Link to="game">Jouer</Link></div>
+            {isConnected && 
+            <div className="btn" id="modifyPwdBtn">
+              <Link to="update" state={{data: userName}}>Modifier mot de passe</Link>
+            </div>}
+
+
+            {isConnected && 
+            <div
+              className="btn" 
+              id="delAccBtn">
+                <Link to="deleteaccount" state={{data: userName}} >Supprimer compte</Link>
+            </div> }
+
         </div>
         
     </div>
     )
   }
-}
+
 export default Home;

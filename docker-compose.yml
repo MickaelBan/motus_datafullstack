@@ -28,14 +28,14 @@ services:
     ports:
     - "5432:5432"
 
-  front:
-    container_name: webapp
-    build: 
-      context: ./front
-      dockerfile: Dockerfile
-    volumes:
-      - ./front/src:/app/src
-    networks:
-      - default
-    ports:
-    - "3000:3000"
+  # front:
+  #   container_name: webapp
+  #   build: 
+  #     context: ./front
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./front/src:/app/src
+  #   networks:
+  #     - default
+  #   ports:
+  #   - "3000:3000"

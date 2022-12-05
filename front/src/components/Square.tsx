@@ -26,5 +26,3 @@ class Square extends React.Component<SquareProps> {
 }
   
 export default Square;
-  
-  // ========================================
